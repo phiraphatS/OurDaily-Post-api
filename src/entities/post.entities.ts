@@ -9,9 +9,6 @@ export class Post {
   @Column("varchar", { name: "CONTENT_TEXT", length: 1500 })
   contentText: string;
 
-  @Column("integer", { name: "IS_VIEWED" })
-  isViewed: number;
-
   @Column("integer", { name: "IS_ACTIVE" })
   isActive: number;
 
@@ -32,7 +29,7 @@ export class Post {
 
   @OneToMany(
     () => PostImg,
-    (postImg) => postImg.postId,
+    (postImg) => postImg.post,
   )
-  postImg: PostImg[];
+  postImgs: PostImg[];
 }

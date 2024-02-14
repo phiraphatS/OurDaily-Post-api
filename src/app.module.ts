@@ -6,6 +6,9 @@ import { FeedsModule } from './endpoint/feeds/feeds.module';
 import { ClientModule } from './socket/client/client.module';
 import { PostImg } from './entities/post_img.entities';
 import { Post } from './entities/post.entities';
+import { UploadfileModule } from './endpoint/uploadfile/uploadfile.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { User } from './entities/user.entities';
 
 
 @Module({
@@ -15,10 +18,15 @@ import { Post } from './entities/post.entities';
       entities: [
         Post,
         PostImg,
+        User,
       ]
+    }),
+    MulterModule.register({
+      dest: './upload',
     }),
     FeedsModule,
     ClientModule,
+    UploadfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,8 +27,8 @@ export class PostImg {
   @Column("integer", { name: "MODIFIED_BY" })
   modifiedBy: number;
 
-  @Column("integer", { name: "POST_ID" })
-  postId: number;
+  // @Column("integer", { name: "POST_ID" })
+  // postId: number;
 
   @ManyToOne(
     () => Post,
