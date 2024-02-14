@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import IBMServices from 'src/_helper/ibm-cloud';
 import { Post } from 'src/entities/post.entities';
 import { PostImg } from 'src/entities/post_img.entities';
 import { User } from 'src/entities/user.entities';
@@ -9,7 +8,6 @@ import { DataSource, In, Repository } from 'typeorm';
 @Injectable()
 export class FeedsService {
   constructor(
-    private imbServices: IBMServices,
     private dataSource: DataSource,
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
