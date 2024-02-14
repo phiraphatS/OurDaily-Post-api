@@ -5,12 +5,6 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "builds": [
-    {
-      "src": "package.json", 
-      "use": "vercel-sapper"
-    }
-  ],
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
