@@ -13,5 +13,7 @@ async function bootstrap() {
   console.log(`Server started on port     : ${port}`);
   console.log(`API URL                    : http://localhost:${port}/api`);
   console.log(`Server running on hostname : ${os.hostname()}`);
+
+  console.log(`Get hello message          : http://localhost:${port}/api`);
 }
 bootstrap();
