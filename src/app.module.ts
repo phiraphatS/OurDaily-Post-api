@@ -9,7 +9,7 @@ import { Post } from './entities/post.entities';
 import { UploadfileModule } from './endpoint/uploadfile/uploadfile.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { User } from './entities/user.entities';
-import IBMServices from './_helper/ibm-cloud';
+import { IBMModules } from './_helper/imb-cloud.module';
 
 
 @Module({
@@ -28,11 +28,11 @@ import IBMServices from './_helper/ibm-cloud';
     FeedsModule,
     ClientModule,
     UploadfileModule,
+    IBMModules,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    IBMServices
   ],
 })
 export class AppModule {}
