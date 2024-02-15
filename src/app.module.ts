@@ -25,6 +25,7 @@ import { Post } from './entities/Post';
     MulterModule.register({
       dest: './upload',
     }),
+    // MinioServiceModule,
     FeedsModule,
     ClientModule,
     UploadfileModule,

@@ -23,8 +23,9 @@ export class FeedsController {
     try {
       const page = parseInt(query.page) || 1;
       const limit = parseInt(query.limit) || 10;
+      const alreadyGet = query.alreadyGet ? query.alreadyGet.split(',').map((x: string) => parseInt(x)) : [];
       const user = req.user || { id: 2 };
-      const response = await this.feedsService.getFeeds(user, page, limit);
+      const response = await this.feedsService.getFeeds(user, page, limit, alreadyGet);
       return res.status(HttpStatus.OK).json(response);
     } catch (err) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);

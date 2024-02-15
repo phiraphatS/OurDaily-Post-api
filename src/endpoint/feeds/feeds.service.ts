@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
 import { PostImg } from 'src/entities/PostImg';
 import { User } from 'src/entities/User';
-import { DataSource, In, Repository } from 'typeorm';
+import { DataSource, In, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class FeedsService {
@@ -17,15 +17,17 @@ export class FeedsService {
     private userRepository: Repository<User>,
   ) {}
 
-  async getFeeds(user: any, page: number, limit: number) {
+  async getFeeds(user: any, page: number, limit: number, alreadyGet: number[]) {
     try {
       const user = await this.userRepository.find({
         where: {
           id: In([1, 2]),
         }
       })
+
       const feeds = await this.postRepository.find({
         where: {
+          id: Not(In(alreadyGet)),
           isActive: 1,
           isDeleted: 0,
         },
