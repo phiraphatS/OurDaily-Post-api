@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from 'src/entities/post.entities';
-import { PostImg } from 'src/entities/post_img.entities';
-import { User } from 'src/entities/user.entities';
+import { Post } from 'src/entities/Post';
+import { PostImg } from 'src/entities/PostImg';
+import { User } from 'src/entities/User';
 import { DataSource, In, Repository } from 'typeorm';
 
 @Injectable()
@@ -55,8 +55,8 @@ export class FeedsService {
           createdAt: obj.createdDate,
           profile: {
             avatar: targetUser.avatar,
-            fullName: targetUser.fullname,
-            position: targetUser.roleName,
+            fullName: targetUser.fullName,
+            position: targetUser.rolename,
           }
         });
       }

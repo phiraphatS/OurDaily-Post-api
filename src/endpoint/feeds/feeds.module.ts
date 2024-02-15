@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { FeedsService } from './feeds.service';
 import { FeedsController } from './feeds.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostImg } from 'src/entities/post_img.entities';
-import { Post } from 'src/entities/post.entities';
-import { User } from 'src/entities/user.entities';
+import { PostImg } from 'src/entities/PostImg';
+import { Post } from 'src/entities/Post';
+import { User } from 'src/entities/User';
 
 @Module({
   imports: [

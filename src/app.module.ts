@@ -4,12 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FeedsModule } from './endpoint/feeds/feeds.module';
 import { ClientModule } from './socket/client/client.module';
-import { PostImg } from './entities/post_img.entities';
-import { Post } from './entities/post.entities';
 import { UploadfileModule } from './endpoint/uploadfile/uploadfile.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { User } from './entities/user.entities';
 import { IBMModules } from './_helper/imb-cloud.module';
+import { PostImg } from './entities/PostImg';
+import { User } from './entities/User';
+import { Post } from './entities/Post';
 
 
 @Module({

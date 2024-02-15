@@ -1,0 +1,13 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "ep-blue-dawn-a4j3ysk6-pooler.us-east-1.aws.neon.tech",
+    "port": 5432,
+    "username": "default",
+    "password": "on8afHArcxP6",
+    "database": "",
+    "synchronize": false,
+    "entities": ["entities/*.js"]
+  }
+]
