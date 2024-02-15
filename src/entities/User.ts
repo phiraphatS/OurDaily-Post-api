@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 @Index("User_pkey", ["id"], { unique: true })
 @Entity("User", { schema: "public" })
@@ -50,4 +58,10 @@ export class User {
 
   @Column("integer", { name: "MODIFIED_BY" })
   modifiedBy: number;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
 }

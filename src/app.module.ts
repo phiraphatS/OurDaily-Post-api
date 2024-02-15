@@ -10,6 +10,8 @@ import { IBMModules } from './_helper/imb-cloud.module';
 import { PostImg } from './entities/PostImg';
 import { User } from './entities/User';
 import { Post } from './entities/Post';
+import { Like } from './entities/Like';
+import { Comment } from './entities/Comment';
 
 
 @Module({
@@ -17,10 +19,12 @@ import { Post } from './entities/Post';
     TypeOrmModule.forRoot({
       ...require('../typeorm.config'),
       entities: [
-        Post,
-        PostImg,
+        Post, 
+        PostImg, 
         User,
-      ]
+        Like,
+        Comment,
+      ],
     }),
     MulterModule.register({
       dest: './upload',

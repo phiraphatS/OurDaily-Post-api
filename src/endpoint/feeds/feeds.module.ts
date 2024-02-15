@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostImg } from 'src/entities/PostImg';
 import { Post } from 'src/entities/Post';
 import { User } from 'src/entities/User';
+import { Like } from 'src/entities/Like';
+import { Comment } from 'src/entities/Comment';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { User } from 'src/entities/User';
       Post,
       PostImg,
       User,
+      Like,
+      Comment,
     ]),
   ],
   controllers: [FeedsController],

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Comment } from 'src/entities/Comment';
+import { Like } from 'src/entities/Like';
 import { Post } from 'src/entities/Post';
 import { PostImg } from 'src/entities/PostImg';
 import { User } from 'src/entities/User';
@@ -15,13 +17,27 @@ export class FeedsService {
     private postImgRepository: Repository<PostImg>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
   ) {}
 
   async getFeeds(user: any, page: number, limit: number, alreadyGet: number[]) {
     try {
       const user = await this.userRepository.find({
+        select: {
+          id: true,
+          avatar: true,
+          fullName: true,
+          rolename: true,
+        },
         where: {
           id: In([1, 2]),
+        },
+        relations: {
+          likes: true,
+          comments: true,
         }
       })
 
@@ -33,6 +49,12 @@ export class FeedsService {
         },
         relations: {
           postImgs: true,
+          likes: {
+            user: true,
+          },
+          comments: {
+            user: true,
+          }
         },
         order: {
           createdDate: 'DESC',
@@ -49,6 +71,10 @@ export class FeedsService {
         }
 
         const targetUser = user.find((x) => x.id === obj.createdBy);
+        const isLiked = obj.likes.find((x) => x.user.id === targetUser.id) ? true : false;
+        
+        const likedUser = user.filter((x) => obj.likes.find((y) => y.user.id === x.id));
+        const commentUser = user.filter((x) => obj.comments.find((y) => y.user.id === x.id));
 
         result.push({
           id: obj.id,
@@ -59,7 +85,12 @@ export class FeedsService {
             avatar: targetUser.avatar,
             fullName: targetUser.fullName,
             position: targetUser.rolename,
-          }
+          },
+          action: {
+            like: likedUser,
+            comment: commentUser,
+          },
+          isLiked: isLiked,
         });
       }
       
@@ -115,6 +146,84 @@ export class FeedsService {
         status: true,
         message: 'Success',
         results: null,
+      }
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw {
+        status: false,
+        message: err.message,
+        results: err,
+      }
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async likePost(user: any, postId: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      let isLike = false;
+      const post = await this.postRepository.findOne({
+        where: {
+          id: postId,
+          isActive: 1,
+          isDeleted: 0,
+        },
+        relations: {
+          likes: {
+            user: true,
+          },
+        }
+      });
+      const getUser = await this.userRepository.findOneBy({ id: user.id });
+
+      if (!post) {
+        throw {
+          status: false,
+          message: 'Post not found',
+          results: null,
+        }
+      }
+
+      let like = post.likes.find((x) => x.user && (x.user.id === user.id));
+      if (like) {
+        like.isActive = like.isActive? 0 : 1;
+        like.modifiedAt = new Date();
+
+        await queryRunner.manager.save(like);
+        isLike = like.isActive? true : false;
+      } else {
+        like = this.likeRepository.create();
+        like.post = post;
+        like.user = getUser;
+        like.isActive = 1;
+        like.isDeleted = 0;
+        like.createdAt = new Date();
+        like.modifiedAt = new Date();
+
+        await queryRunner.manager.save(like);
+        isLike = true;
+      }
+
+      const userMap = {
+        id: like.user.id,
+        avatar: like.user.avatar,
+        fullName: like.user.fullName,
+      };
+
+      const results = {
+        isLike: isLike,
+        user: userMap,
+      }
+
+      await queryRunner.commitTransaction();
+      return {
+        status: true,
+        message: 'Success',
+        results: results,
       }
     } catch (err) {
       await queryRunner.rollbackTransaction();

@@ -5,6 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
 import { PostImg } from "./PostImg";
 
 @Index("Post_pkey", ["id"], { unique: true })
@@ -36,6 +38,12 @@ export class Post {
 
   @Column("integer", { name: "MODIFIED_BY" })
   modifiedBy: number;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
+
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 
   @OneToMany(() => PostImg, (postImg) => postImg.post)
   postImgs: PostImg[];
