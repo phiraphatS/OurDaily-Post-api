@@ -1,14 +1,9 @@
 module.exports = {
   type: 'postgres',
-  url: 'postgres://default:on8afHArcxP6@ep-blue-dawn-a4j3ysk6-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require',
+  url: 'postgresql://root:JVB3Y02hMCj8L97f1dUQRKzg5eD6w4lm@hkg1.clusters.zeabur.com:30587/zeabur',
   synchronize: false,
   logging: false,
   entities: [
      "src/entities/*.entity{.ts,.js}"
   ],
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
 };
