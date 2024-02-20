@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Comment } from 'src/entities/Comment';
-import { Like } from 'src/entities/Like';
-import { Post } from 'src/entities/Post';
-import { PostImg } from 'src/entities/PostImg';
-import { User } from 'src/entities/User';
 import { DataSource, In, Not, Repository } from 'typeorm';
+import { Post } from '../../entities/Post';
+import { Like } from '../../entities/Like';
+import { PostImg } from '../../entities/PostImg';
+import { User } from '../../entities/User';
+import { Comment } from '../../entities/Comment';
 
 @Injectable()
 export class FeedsService {
@@ -217,6 +217,75 @@ export class FeedsService {
       const results = {
         isLike: isLike,
         user: userMap,
+      }
+
+      await queryRunner.commitTransaction();
+      return {
+        status: true,
+        message: 'Success',
+        results: results,
+      }
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw {
+        status: false,
+        message: err.message,
+        results: err,
+      }
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async commentPost(user: any, body: any) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const post = await this.postRepository.findOne({
+        where: {
+          id: body.postId,
+          isActive: 1,
+          isDeleted: 0,
+        },
+        relations: {
+          comments: {
+            user: true,
+          },
+        }
+      });
+      const getUser = await this.userRepository.findOneBy({ id: user.id });
+
+      if (!post) {
+        throw {
+          status: false,
+          message: 'Post not found',
+          results: null,
+        }
+      }
+
+      const newComment = this.commentRepository.create();
+      newComment.post = post;
+      newComment.user = getUser;
+      newComment.content = body.content;
+      newComment.isActive = 1;
+      newComment.isDeleted = 0;
+      newComment.createdAt = new Date();
+      newComment.modifiedAt = new Date();
+
+      await queryRunner.manager.save(newComment);
+
+      const userMap = {
+        id: newComment.user.id,
+        avatar: newComment.user.avatar,
+        fullName: newComment.user.fullName,
+      };
+
+      const results = {
+        user: userMap,
+        content: newComment.content,
+        createdAt: newComment.createdAt,
       }
 
       await queryRunner.commitTransaction();

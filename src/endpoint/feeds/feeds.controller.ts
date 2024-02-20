@@ -42,4 +42,15 @@ export class FeedsController {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
+
+  @Post('comment-post')
+  async commentPost(@Req() req: any, @Body() body: any, @Res() res: any) {
+    try {
+      const user = req.user || { id: 2 };
+      const response = await this.feedsService.commentPost(user, body);
+      return res.status(HttpStatus.OK).json(response);
+    } catch (err) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+    }
+  }
 }
