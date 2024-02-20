@@ -53,4 +53,14 @@ export class FeedsController {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
+
+  @Get('get-comments')
+  async getComments(@Req() req: any, @Res() res: any, @Query() query: any){
+    try {
+      const response = await this.feedsService.getComment(query);
+      return res.status(HttpStatus.OK).json(response);
+    } catch (err) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+    }
+  }
 }

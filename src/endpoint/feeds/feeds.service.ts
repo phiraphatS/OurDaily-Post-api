@@ -76,6 +76,21 @@ export class FeedsService {
         const likedUser = user.filter((x) => obj.likes.find((y) => y.user.id === x.id));
         const commentUser = user.filter((x) => obj.comments.find((y) => y.user.id === x.id));
 
+        const mapLikedUser = likedUser.map((x) => ({
+          id: x.id,
+          avatar: x.avatar,
+          fullName: x.fullName,
+          position: x.rolename,
+        }))
+
+        const mapCommentUser = commentUser.map((x) => ({
+          id: x.id,
+          avatar: x.avatar,
+          fullName: x.fullName,
+          position: x.rolename,
+        }))
+
+        const filterComment = obj.comments.filter((x) => x.isActive && !x.isDeleted);
         result.push({
           id: obj.id,
           content: obj.contentText,
@@ -87,8 +102,9 @@ export class FeedsService {
             position: targetUser.rolename,
           },
           action: {
-            like: likedUser,
-            comment: commentUser,
+            like: mapLikedUser,
+            comment: mapCommentUser,
+            commentCount: filterComment.length,
           },
           isLiked: isLiked,
         });
@@ -303,6 +319,91 @@ export class FeedsService {
       }
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async getComment({ postId }: { postId: number}) {
+    try {
+      const getPost = await this.postRepository.findOne({
+        where: {
+          id: postId,
+          isActive: 1,
+          isDeleted: 0,
+        },
+        relations: {
+          comments: {
+            user: true,
+          },
+        }
+      });
+
+      if (!getPost) {
+        throw {
+          status: false,
+          message: 'Post not found',
+          results: null,
+        }
+      }
+
+      const filterComments = getPost.comments.filter((x) => x.isActive && !x.isDeleted);
+      const sortComments = filterComments.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+      // const comments = await this.commentRepository.find({
+      //   where: {
+      //     post: getPost,
+      //     isActive: 1,
+      //     isDeleted: 0,
+      //   },
+      //   relations: {
+      //     user: true,
+      //   },
+      //   order: {
+      //     createdAt: 'DESC',
+      //   }
+      // });
+
+      const user = await this.userRepository.find({
+        select: {
+          id: true,
+          avatar: true,
+          fullName: true,
+          rolename: true,
+        },
+        where: {
+          id: In([1, 2]),
+        },
+        relations: {
+          likes: true,
+          comments: true,
+        }
+      })
+
+      const result = [];
+      for (const obj of sortComments) {
+        const targetUser = user.find((x) => x.id === obj.user.id);
+        result.push({
+          id: obj.id,
+          content: obj.content,
+          createdAt: obj.createdAt,
+          profile: {
+            avatar: targetUser.avatar,
+            fullName: targetUser.fullName,
+            position: targetUser.rolename,
+          },
+        });
+      }
+
+      return {
+        status: true,
+        message: 'Success',
+        results: result,
+      };
+    } catch (err) {
+      throw {
+        status: false,
+        message: err.message,
+        results: err,
+      }
     }
   }
 }
