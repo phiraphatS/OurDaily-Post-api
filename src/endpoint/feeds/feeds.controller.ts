@@ -63,4 +63,15 @@ export class FeedsController {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
+
+  @Post('delete-post')
+  async deletePost(@Req() req: any, @Body() body: any, @Res() res: any) {
+    try {
+      const user = req.user || { id: 2 };
+      const response = await this.feedsService.deletePost(user, body.post_id);
+      return res.status(HttpStatus.OK).json(response);
+    } catch (err) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+    }
+  }
 }

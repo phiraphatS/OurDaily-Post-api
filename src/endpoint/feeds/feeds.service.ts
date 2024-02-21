@@ -97,6 +97,7 @@ export class FeedsService {
           img: imgList,
           createdAt: obj.createdDate,
           profile: {
+            id: targetUser.id,
             avatar: targetUser.avatar,
             fullName: targetUser.fullName,
             position: targetUser.rolename,
@@ -398,6 +399,53 @@ export class FeedsService {
         message: err.message,
         results: err,
       }
+    }
+  }
+
+  async deletePost(user: any, postId: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const post = await this.postRepository.findOne({
+        where: {
+          id: postId,
+          isActive: 1,
+          isDeleted: 0,
+          createdBy: user.id,
+        },
+      });
+
+      if (!post) {
+        throw {
+          status: false,
+          message: 'Post not found',
+          results: null,
+        }
+      }
+
+      post.isActive = 0;
+      post.isDeleted = 1;
+      post.modifiedDate = new Date();
+      post.modifiedBy = user.id;
+
+      await queryRunner.manager.save(post);
+      await queryRunner.commitTransaction();
+      return {
+        status: true,
+        message: 'Success',
+        results: null,
+      }
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw {
+        status: false,
+        message: err.message,
+        results: err,
+      }
+    } finally {
+      await queryRunner.release();
     }
   }
 }
