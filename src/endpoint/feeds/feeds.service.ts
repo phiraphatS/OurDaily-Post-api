@@ -23,7 +23,7 @@ export class FeedsService {
     private commentRepository: Repository<Comment>,
   ) {}
 
-  async getFeeds(user: any, page: number, limit: number, alreadyGet: number[]) {
+  async getFeeds(user: any, offset: number, limit: number, alreadyGet: number[]) {
     try {
       const user = await this.userRepository.find({
         select: {
@@ -59,7 +59,7 @@ export class FeedsService {
         order: {
           createdDate: 'DESC',
         },
-        skip: (page - 1) * limit,
+        skip: offset,
         take: limit,
       })
 

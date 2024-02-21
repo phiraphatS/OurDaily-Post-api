@@ -21,7 +21,7 @@ export class FeedsController {
   @Get('get-feeds')
   async getFeeds(@Req() req: any, @Res() res: any, @Query() query: any){
     try {
-      const page = parseInt(query.page) || 1;
+      const page = parseInt(query.offset) || 0;
       const limit = parseInt(query.limit) || 10;
       const alreadyGet = query.alreadyGet ? query.alreadyGet.split(',').map((x: string) => parseInt(x)) : [];
       const user = req.user || { id: 2 };
