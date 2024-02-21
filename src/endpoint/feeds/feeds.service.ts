@@ -298,17 +298,11 @@ export class FeedsService {
         fullName: newComment.user.fullName,
       };
 
-      const results = {
-        user: userMap,
-        content: newComment.content,
-        createdAt: newComment.createdAt,
-      }
-
       await queryRunner.commitTransaction();
       return {
         status: true,
         message: 'Success',
-        results: results,
+        results: null,
       }
     } catch (err) {
       await queryRunner.rollbackTransaction();
