@@ -23,9 +23,9 @@ export class FeedsService {
     private commentRepository: Repository<Comment>,
   ) {}
 
-  async getFeeds(user: any, offset: number, limit: number, alreadyGet: number[]) {
+  async getFeeds(user: { id: number }, offset: number, limit: number, alreadyGet: number[]) {
     try {
-      const user = await this.userRepository.find({
+      const userFind = await this.userRepository.find({
         select: {
           id: true,
           avatar: true,
@@ -70,11 +70,11 @@ export class FeedsService {
           imgList.push(img.imgUrl);
         }
 
-        const targetUser = user.find((x) => x.id === obj.createdBy);
-        const isLiked = obj.likes.find((x) => x.user.id === targetUser.id) ? true : false;
+        const targetUser = userFind.find((x) => x.id === obj.createdBy);
+        const isLiked = obj.likes.find((x) => x.user.id === user.id) ? true : false;
         
-        const likedUser = user.filter((x) => obj.likes.find((y) => y.user.id === x.id));
-        const commentUser = user.filter((x) => obj.comments.find((y) => y.user.id === x.id));
+        const likedUser = userFind.filter((x) => obj.likes.find((y) => y.user.id === x.id));
+        const commentUser = userFind.filter((x) => obj.comments.find((y) => y.user.id === x.id));
 
         const mapLikedUser = likedUser.map((x) => ({
           id: x.id,
