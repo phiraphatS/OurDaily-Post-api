@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import IBMServices from 'src/_helper/ibm-cloud';
+import IBMServices from '../../_helper/ibm-cloud';
 
 @Injectable()
 export class UploadfileService {

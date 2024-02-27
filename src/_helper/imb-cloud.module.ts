@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import IBMServices from 'src/_helper/ibm-cloud';
+import IBMServices from './ibm-cloud';
 
 @Module({
   providers: [

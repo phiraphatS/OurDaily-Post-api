@@ -12,6 +12,7 @@ import { User } from './entities/User';
 import { Post } from './entities/Post';
 import { Like } from './entities/Like';
 import { Comment } from './entities/Comment';
+import { UsersModule } from './endpoint/users/users.module';
 
 
 @Module({
@@ -34,6 +35,7 @@ import { Comment } from './entities/Comment';
     ClientModule,
     UploadfileModule,
     IBMModules,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
