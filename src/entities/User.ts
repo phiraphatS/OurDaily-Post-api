@@ -17,6 +17,9 @@ export class User {
   @Column("character varying", { name: "AVATAR", nullable: true, length: 1000 })
   avatar: string | null;
 
+  @Column("character varying", { name: "AVATAR_KEY", nullable: true, length: 255 })
+  avatarKey: string | null;
+
   @Column("character varying", { name: "FULL_NAME", length: 255 })
   fullName: string;
 

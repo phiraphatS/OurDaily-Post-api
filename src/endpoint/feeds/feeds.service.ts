@@ -6,10 +6,14 @@ import { Like } from '../../entities/Like';
 import { PostImg } from '../../entities/PostImg';
 import { User } from '../../entities/User';
 import { Comment } from '../../entities/Comment';
+import { S3StorageCloud } from '../../_helper/s3-storage-cloud';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FeedsService {
   constructor(
+    private s3Storage: S3StorageCloud,
+    private usersService: UsersService,
     private dataSource: DataSource,
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
@@ -25,21 +29,7 @@ export class FeedsService {
 
   async getFeeds(user: { id: number }, offset: number, limit: number, alreadyGet: number[]) {
     try {
-      const userFind = await this.userRepository.find({
-        select: {
-          id: true,
-          avatar: true,
-          fullName: true,
-          rolename: true,
-        },
-        where: {
-          id: In([1, 2]),
-        },
-        relations: {
-          likes: true,
-          comments: true,
-        }
-      })
+      const userFind = await this.usersService.getUserAll();
 
       const feeds = await this.postRepository.find({
         where: {
@@ -64,11 +54,28 @@ export class FeedsService {
       })
 
       const result = [];
+      const newUrlList = [];
       for (const obj of feeds) {
-        const imgList = [];
-        for (const img of obj.postImgs) {
-          imgList.push(img.imgUrl);
-        }
+        // const imgList = [];
+        // for (const img of obj.postImgs) {
+        //   imgList.push(img.imgUrl);
+        // }
+        const imgList = await Promise.all(obj.postImgs.map(async (x) => {
+          const ping = await this.s3Storage.ping(x.imgUrl);
+          if (ping) {
+            return x.imgUrl;
+          } else {
+            const newUrl = await this.s3Storage.getSignedUrl(x.key);
+            if (!newUrl) {
+              return "";
+            }
+            newUrlList.push({
+              key: x.key,
+              url: newUrl,
+            })
+            return newUrl;
+          }
+        }))
 
         const targetUser = userFind.find((x) => x.id === obj.createdBy);
         const isLiked = obj.likes.find((x) => x.user.id === user.id) ? true : false;
@@ -110,6 +117,17 @@ export class FeedsService {
           isLiked: isLiked,
         });
       }
+
+      // update new url
+      if (newUrlList.length > 0) {
+        const keyUpdateMap = newUrlList.map((x) => x.key);
+        const getPostImg = await this.postImgRepository.findBy({ key: In(keyUpdateMap) });
+        for (const obj of getPostImg) {
+          const newUrl = newUrlList.find((x) => x.key === obj.key);
+          obj.imgUrl = newUrl.url;
+        }
+        await this.postImgRepository.save(getPostImg);
+      }
       
       return {
         status: true,
@@ -147,6 +165,7 @@ export class FeedsService {
         const newPostImg = this.postImgRepository.create();
         newPostImg.post = newPost;
         newPostImg.imgUrl = obj.url;
+        newPostImg.key = obj.key;
         newPostImg.isActive = 1;
         newPostImg.isDeleted = 0;
         newPostImg.createdDate = new Date();

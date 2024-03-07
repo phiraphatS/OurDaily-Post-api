@@ -7,6 +7,9 @@ import { PostImg } from '../../entities/PostImg';
 import { User } from '../../entities/User';
 import { Like } from '../../entities/Like';
 import { Comment } from '../../entities/Comment';
+import { S3StorageCloud } from '../../_helper/s3-storage-cloud';
+import { UsersModule } from '../users/users.module';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
@@ -17,10 +20,13 @@ import { Comment } from '../../entities/Comment';
       Like,
       Comment,
     ]),
+    UsersModule,
   ],
   controllers: [FeedsController],
   providers: [
     FeedsService,
+    S3StorageCloud,
+    UsersService,
   ],
 })
 export class FeedsModule {}

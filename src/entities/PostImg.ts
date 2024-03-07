@@ -17,6 +17,9 @@ export class PostImg {
   @Column("character varying", { name: "IMG_URL", length: 500 })
   imgUrl: string;
 
+  @Column("character varying", { name: "KEY", length: 255 })
+  key: string;
+
   @Column("integer", { name: "IS_ACTIVE" })
   isActive: number;
 
