@@ -61,10 +61,7 @@ export class FeedsService {
         //   imgList.push(img.imgUrl);
         // }
         const imgList = await Promise.all(obj.postImgs.map(async (x) => {
-          const ping = await this.s3Storage.ping(x.imgUrl);
-          if (ping) {
-            return x.imgUrl;
-          } else {
+          if (!x.imgUrlExpiredDate || x.imgUrlExpiredDate.getTime() < new Date().getTime()) {
             const newUrl = await this.s3Storage.getSignedUrl(x.key);
             if (!newUrl) {
               return "";
@@ -74,6 +71,8 @@ export class FeedsService {
               url: newUrl,
             })
             return newUrl;
+          } else {
+            return x.imgUrl;
           }
         }))
 
@@ -125,6 +124,10 @@ export class FeedsService {
         for (const obj of getPostImg) {
           const newUrl = newUrlList.find((x) => x.key === obj.key);
           obj.imgUrl = newUrl.url;
+          
+          const date = new Date();
+          date.setHours(date.getHours() + 1);
+          obj.imgUrlExpiredDate = date;
         }
         await this.postImgRepository.save(getPostImg);
       }

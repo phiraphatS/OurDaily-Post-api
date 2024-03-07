@@ -20,6 +20,9 @@ export class User {
   @Column("character varying", { name: "AVATAR_KEY", nullable: true, length: 255 })
   avatarKey: string | null;
 
+  @Column("timestamp without time zone", { name: "AVATAR_EXPIRED_DATE" })
+  avatarExpiredDate: Date;
+
   @Column("character varying", { name: "FULL_NAME", length: 255 })
   fullName: string;
 

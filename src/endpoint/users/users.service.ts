@@ -24,6 +24,7 @@ export class UsersService {
                     id: true,
                     avatar: true,
                     avatarKey: true,
+                    avatarExpiredDate: true,
                     fullName: true,
                     rolename: true,
                 },
@@ -34,16 +35,19 @@ export class UsersService {
             });
     
             const reCheckAndUpdateAvatar = await Promise.all(user.map(async (x) => {
-                const ping = await this.s3Storage.ping(x.avatar);
-                if (ping) {
-                    return x
-                } else {
+                if (!x.avatarExpiredDate || x.avatarExpiredDate < new Date()) {
                     const newUrl = await this.s3Storage.getSignedUrl(x.avatarKey);
                     if (!newUrl) {
                         return x;
                     }
+
+                    const date = new Date();
+                    date.setHours(date.getHours() + 1);
+
                     x.avatar = newUrl;
+                    x.avatarExpiredDate = date;
                 }
+
                 return x;
             }));
 

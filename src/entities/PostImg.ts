@@ -20,6 +20,9 @@ export class PostImg {
   @Column("character varying", { name: "KEY", length: 255 })
   key: string;
 
+  @Column("timestamp without time zone", { name: "IMG_URL_EXPIRED_DATE" })
+  imgUrlExpiredDate: Date;
+
   @Column("integer", { name: "IS_ACTIVE" })
   isActive: number;
 

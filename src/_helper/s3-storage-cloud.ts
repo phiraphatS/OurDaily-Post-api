@@ -48,6 +48,7 @@ export class S3StorageCloud {
     }
 
     public async getSignedUrl(key: string) {
+        // Set the presigned URL to expire after one hour
         const expiration = 60 * 60;
         const expirationDate = new Date();
         expirationDate.setSeconds(expirationDate.getSeconds() + expiration);
