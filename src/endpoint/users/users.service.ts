@@ -33,6 +33,13 @@ export class UsersService {
                     comments: true,
                 }
             });
+
+            // Test
+            const target = user[0];
+            const expiredDate = target.avatarExpiredDate;
+            const isHasExpiredDate = !expiredDate;
+            const isExpired = expiredDate < new Date();
+            const checkFullCondition = isHasExpiredDate || isExpired;
     
             const reCheckAndUpdateAvatar = await Promise.all(user.map(async (x) => {
                 if (!x.avatarExpiredDate || x.avatarExpiredDate < new Date()) {

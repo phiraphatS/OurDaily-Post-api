@@ -163,6 +163,9 @@ export class FeedsService {
 
       await queryRunner.manager.save(newPost);
 
+      const dateExpired = new Date();
+      dateExpired.setHours(dateExpired.getHours() + 1);
+
       const newPostImgList: PostImg[] = [];
       for (const obj of body.imgUrl) {
         const newPostImg = this.postImgRepository.create();
@@ -175,6 +178,7 @@ export class FeedsService {
         newPostImg.modifiedDate = new Date();
         newPostImg.createdBy = user.id;
         newPostImg.modifiedBy = user.id;
+        newPostImg.imgUrlExpiredDate = dateExpired;
         
         newPostImgList.push(newPostImg);
       }

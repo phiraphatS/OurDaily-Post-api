@@ -1,4 +1,4 @@
-import { GetObjectCommand, GetObjectCommandOutput, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, GetObjectCommandOutput, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -96,5 +96,15 @@ export class S3StorageCloud {
         } catch (error) {
             return false;
         }
+    }
+
+    public async deleteFile(key: string) {
+        const params = {
+            Bucket: this.bucket,
+            Key: key,
+        };
+
+        const command = new DeleteObjectCommand(params);
+        return this.s3.send(command);
     }
 }

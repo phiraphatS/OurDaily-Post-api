@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, HttpStatus, Post, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadfileService } from './uploadfile.service';
 import { S3StorageCloud } from '../../_helper/s3-storage-cloud';
@@ -28,11 +28,30 @@ export class UploadfileController {
       const result = {
         key: newKey,
         url: presignedUrl,
+        originalname: file.originalname,
       }
       res.status(HttpStatus.OK).json({
         status: true,
         message: 'Success',
         results: result,
+      });
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: false,
+        message: err.message,
+        results: err,
+      });
+    }
+  }
+
+  @Delete('delete-s3')
+  async deleteFileS3(@Res() res: any, @Query('key') key: string){
+    try {
+      const results = await this.s3StorageCloud.deleteFile(key);
+      res.status(HttpStatus.OK).json({
+        status: true,
+        message: 'Success',
+        results: results,
       });
     } catch (err) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
