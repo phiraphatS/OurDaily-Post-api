@@ -11,6 +11,11 @@ export class AuthenticationController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
-    return this.authenticationService.login(req.user);
+    return await this.authenticationService.login(req.user);
+  }
+
+  @Post('regenerate-password')
+  async regeneratePasswordAndUpdate() {
+    return await this.authenticationService.regeneratePasswordAndUpdate();
   }
 }

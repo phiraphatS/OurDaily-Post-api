@@ -8,13 +8,13 @@ import { ExtractJwt } from 'passport-jwt';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
     private authService: AuthenticationService
-) {
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
-}
+  }
 
   async validate(payload: any) {
     return { id: payload.sub, email: payload.username };

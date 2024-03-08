@@ -36,7 +36,7 @@ import configuration from './_configuration/configuration';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      envFilePath: ['.env', '.env.development', '.env.production', '.env.staging', '.env.test', '.env.local'],
+      // envFilePath: ['.env', '.env.development', '.env.production', '.env.staging', '.env.test', '.env.local'],
     }),
     FeedsModule,
     ClientModule,
