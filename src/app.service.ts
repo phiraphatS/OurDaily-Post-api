@@ -30,6 +30,19 @@ export class AppService {
 
     return result;
   }
+
+  checkDateTimeOnEnvirontment() {
+    const currentDateTime = new Date();
+    const isoDateFormat = currentDateTime.toISOString();
+    const dateTimeFormat = currentDateTime.toLocaleString();
+    const fixLocaleDateTime = currentDateTime.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' });
+
+    return {
+      isoDateFormat,
+      dateTimeFormat,
+      fixLocaleDateTime
+    }
+  }
   // listAllBuckets() {
   //   return this.minioService.client.listBuckets();
   // }

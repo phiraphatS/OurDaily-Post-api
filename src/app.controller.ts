@@ -16,8 +16,9 @@ export class AppController {
   checkVariable() {
     return this.appService.checkVariable();
   }
-  // @Get('buckets')
-  // listAllBuckets() {
-  //   return this.appService.listAllBuckets();
-  // }
+
+  @Get('check-date-time')
+  checkDateTimeOnEnvirontment() {
+    return this.appService.checkDateTimeOnEnvirontment();
+  }
 }
