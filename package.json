@@ -1,6 +1,6 @@
 {
   "name": "our-daily-post-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "",
   "private": true,
@@ -8,10 +8,10 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start": "TZ=Asia/Bangkok nest start",
+    "start:dev": "TZ=Asia/Bangkok nest start --watch",
+    "start:debug": "TZ=Asia/Bangkok nest start --debug --watch",
+    "start:prod": "TZ=Asia/Bangkok node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

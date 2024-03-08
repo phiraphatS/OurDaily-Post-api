@@ -61,6 +61,7 @@ export class FeedsService {
         //   imgList.push(img.imgUrl);
         // }
         const imgList = await Promise.all(obj.postImgs.map(async (x) => {
+          // Asia/Bangkok timezone
           if (!x.imgUrlExpiredDate || x.imgUrlExpiredDate.getTime() < new Date().getTime()) {
             const newUrl = await this.s3Storage.getSignedUrl(x.key);
             if (!newUrl) {
