@@ -14,7 +14,7 @@ import { Comment } from './entities/Comment';
 import { UsersModule } from './endpoint/users/users.module';
 import { AuthenticationModule } from './endpoint/authentication/authentication.module';
 import IBMServices from './_helper/ibm-cloud';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './_configuration/configuration';
 
 
@@ -48,6 +48,7 @@ import configuration from './_configuration/configuration';
   providers: [
     AppService,
     IBMServices,
+    ConfigService,
   ],
 })
 export class AppModule {}
