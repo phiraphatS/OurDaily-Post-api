@@ -11,10 +11,10 @@ export class AppService {
   constructor(
     private configService: ConfigService
   ) {
-    this.region = this.configService.get<string>('AWS_REGION');
-    this.bucket = this.configService.get<string>('AWS_BUCKET');
-    this.accessKeyId = this.configService.get<string>('AWS_ACCESS_KEY_ID');
-    this.secretAccessKey = this.configService.get<string>('AWS_SECRET_ACCESS_KEY');
+    // this.region = this.configService.get<string>('AWS_REGION');
+    // this.bucket = this.configService.get<string>('AWS_BUCKET');
+    // this.accessKeyId = this.configService.get<string>('AWS_ACCESS_KEY_ID');
+    // this.secretAccessKey = this.configService.get<string>('AWS_SECRET_ACCESS_KEY');
   }
   getHello(): string {
     return 'Hello World!';

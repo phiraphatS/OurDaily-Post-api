@@ -17,12 +17,6 @@ export class User {
   @Column("character varying", { name: "AVATAR", nullable: true, length: 1000 })
   avatar: string | null;
 
-  @Column("character varying", { name: "AVATAR_KEY", nullable: true, length: 255 })
-  avatarKey: string | null;
-
-  @Column("timestamp without time zone", { name: "AVATAR_EXPIRED_DATE" })
-  avatarExpiredDate: Date;
-
   @Column("character varying", { name: "FULL_NAME", length: 255 })
   fullName: string;
 
@@ -64,6 +58,19 @@ export class User {
 
   @Column("integer", { name: "MODIFIED_BY" })
   modifiedBy: number;
+
+  @Column("character varying", {
+    name: "AVATAR_KEY",
+    nullable: true,
+    length: 255,
+  })
+  avatarKey: string | null;
+
+  @Column("timestamp without time zone", {
+    name: "AVATAR_EXPIRED_DATE",
+    nullable: true,
+  })
+  avatarExpiredDate: Date | null;
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];

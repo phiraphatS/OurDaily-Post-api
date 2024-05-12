@@ -1,53 +1,41 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FeedsModule } from './endpoint/feeds/feeds.module';
 import { ClientModule } from './socket/client/client.module';
 import { UploadfileModule } from './endpoint/uploadfile/uploadfile.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { PostImg } from './entities/PostImg';
-import { User } from './entities/User';
-import { Post } from './entities/Post';
-import { Like } from './entities/Like';
-import { Comment } from './entities/Comment';
 import { UsersModule } from './endpoint/users/users.module';
 import { AuthenticationModule } from './endpoint/authentication/authentication.module';
-import IBMServices from './_helper/ibm-cloud';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './_configuration/configuration';
-
+import { ConfigService } from '@nestjs/config';
+import { ConfigurationModule } from './_configuration/configuration.module';
+import { ProjectMulterModule } from './_multer/_multer.module';
+import { DatebaseModule } from './_database/database.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      ...require('../typeorm.config'),
-      entities: [
-        Post, 
-        PostImg, 
-        User,
-        Like,
-        Comment,
-      ],
-    }),
-    MulterModule.register({
-      dest: './upload',
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [configuration],
-      // envFilePath: ['.env', '.env.development', '.env.production', '.env.staging', '.env.test', '.env.local'],
-    }),
-    FeedsModule,
+    // TypeOrmModule.forRoot({
+    //   ...require('../typeorm.config'),
+    //   entities: [
+    //     Post, 
+    //     PostImg, 
+    //     User,
+    //     Like,
+    //     Comment,
+    //   ],
+    // }),
+    DatebaseModule,
+    ConfigurationModule,
+    // FeedsModule,
     ClientModule,
     UploadfileModule,
-    UsersModule,
-    AuthenticationModule,
+    // UsersModule,
+    // AuthenticationModule,
+    ProjectMulterModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    IBMServices,
+    // IBMServices,
     ConfigService,
   ],
 })

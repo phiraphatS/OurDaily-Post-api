@@ -17,12 +17,6 @@ export class PostImg {
   @Column("character varying", { name: "IMG_URL", length: 500 })
   imgUrl: string;
 
-  @Column("character varying", { name: "KEY", length: 255 })
-  key: string;
-
-  @Column("timestamp without time zone", { name: "IMG_URL_EXPIRED_DATE" })
-  imgUrlExpiredDate: Date;
-
   @Column("integer", { name: "IS_ACTIVE" })
   isActive: number;
 
@@ -43,6 +37,15 @@ export class PostImg {
 
   @Column("integer", { name: "MODIFIED_BY" })
   modifiedBy: number;
+
+  @Column("character varying", { name: "KEY", nullable: true, length: 255 })
+  key: string | null;
+
+  @Column("timestamp without time zone", {
+    name: "IMG_URL_EXPIRED_DATE",
+    nullable: true,
+  })
+  imgUrlExpiredDate: Date | null;
 
   @ManyToOne(() => Post, (post) => post.postImgs, { onDelete: "CASCADE" })
   @JoinColumn([{ name: "POST_ID", referencedColumnName: "id" }])

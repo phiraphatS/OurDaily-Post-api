@@ -10,7 +10,7 @@ import { S3StorageCloud } from '../../_helper/s3-storage-cloud';
   providers: [
     UploadfileService,
     IBMServices,
-    S3StorageCloud,
+    // S3StorageCloud,
   ],
 })
 export class UploadfileModule {}

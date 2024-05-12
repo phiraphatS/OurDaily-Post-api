@@ -12,13 +12,13 @@ class IBMServices {
   private cos: any;
 
   constructor() {
-    const config = {
-      endpoint: 's3.jp-tok.cloud-object-storage.appdomain.cloud',
-      apiKeyId: 'qPS3Szj1wS1lI00OI4NstXVK9c_N5UMQwSUqle7Gf4Wt',
-      serviceInstanceId: 'crn:v1:bluemix:public:cloud-object-storage:global:a/2d89d45ebd774c5f8b43d702efc13b15:d1b5c5fd-0836-4130-80fa-547147ccc55d:bucket:cloud-object-storage-cos-standard-tni'
-    };
+    // const config = {
+    //   endpoint: 's3.jp-tok.cloud-object-storage.appdomain.cloud',
+    //   apiKeyId: 'qPS3Szj1wS1lI00OI4NstXVK9c_N5UMQwSUqle7Gf4Wt',
+    //   serviceInstanceId: 'crn:v1:bluemix:public:cloud-object-storage:global:a/2d89d45ebd774c5f8b43d702efc13b15:d1b5c5fd-0836-4130-80fa-547147ccc55d:bucket:cloud-object-storage-cos-standard-tni'
+    // };
 
-    this.cos = new ibm.S3(config);
+    // this.cos = new ibm.S3(config);
   }
 
   public fileToBuffer(file) {
