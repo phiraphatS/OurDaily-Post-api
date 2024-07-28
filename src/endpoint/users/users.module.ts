@@ -20,5 +20,8 @@ import { Comment } from '../../entities/Comment';
     UsersService,
     S3StorageCloud,
   ],
+  exports: [
+    UsersService
+  ]
 })
 export class UsersModule {}

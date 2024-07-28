@@ -19,18 +19,18 @@ export class S3StorageCloud {
         // this.accessKeyId = process.env.AWS_ACCESS_KEY_ID || "";
         // this.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
 
-        // this.region = this.configService.get<string>('AWS_REGION');
-        // this.bucket = this.configService.get<string>('AWS_BUCKET');
-        // this.accessKeyId = this.configService.get<string>('AWS_ACCESS_KEY_ID');
-        // this.secretAccessKey = this.configService.get<string>('AWS_SECRET_ACCESS_KEY');
+        this.region = this.configService.get<string>('s3Storage.region');
+        this.bucket = this.configService.get<string>('s3Storage.bucket');
+        this.accessKeyId = this.configService.get<string>('s3Storage.accessKeyId');
+        this.secretAccessKey = this.configService.get<string>('s3Storage.secretAccessKey');
         
-        // this.s3 = new S3Client({
-        //     region: this.region,
-        //     credentials: {
-        //         accessKeyId: this.accessKeyId,
-        //         secretAccessKey: this.secretAccessKey,
-        //     }
-        // });
+        this.s3 = new S3Client({
+            region: this.region,
+            credentials: {
+                accessKeyId: this.accessKeyId,
+                secretAccessKey: this.secretAccessKey,
+            }
+        });
     }
 
     public async uploadFile(key: string, body: Buffer) {

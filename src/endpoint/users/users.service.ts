@@ -34,30 +34,32 @@ export class UsersService {
                 }
             });
     
-            const reCheckAndUpdateAvatar = await Promise.all(user.map(async (x) => {
-                if (!x.avatarExpiredDate || x.avatarExpiredDate < new Date()) {
-                    const newUrl = await this.s3Storage.getSignedUrl(x.avatarKey);
-                    if (!newUrl) {
-                        return x;
-                    }
+            // const reCheckAndUpdateAvatar = await Promise.all(user.map(async (x) => {
+            //     if (!x.avatarExpiredDate || x.avatarExpiredDate < new Date()) {
+            //         const newUrl = await this.s3Storage.getSignedUrl(x.avatarKey);
+            //         if (!newUrl) {
+            //             return x;
+            //         }
 
-                    const date = new Date();
-                    date.setHours(date.getHours() + 1);
+            //         const date = new Date();
+            //         date.setHours(date.getHours() + 1);
 
-                    x.avatar = newUrl;
-                    x.avatarExpiredDate = date;
-                }
+            //         x.avatar = newUrl;
+            //         x.avatarExpiredDate = date;
+            //     }
 
-                return x;
-            }));
+            //     return x;
+            // }));
 
-            await queryRunner.manager.save(reCheckAndUpdateAvatar);
-            await queryRunner.commitTransaction();
+            // await queryRunner.manager.save(reCheckAndUpdateAvatar);
+            // await queryRunner.commitTransaction();
 
-            return reCheckAndUpdateAvatar
+            return user
         } catch (err) {
             await queryRunner.rollbackTransaction();
             throw err
+        } finally {
+            await queryRunner.release();
         }
     }
 }
