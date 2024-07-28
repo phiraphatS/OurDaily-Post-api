@@ -29,7 +29,7 @@ import { DatebaseModule } from './_database/database.module';
     ClientModule,
     UploadfileModule,
     // UsersModule,
-    // AuthenticationModule,
+    AuthenticationModule,
     ProjectMulterModule,
   ],
   controllers: [AppController],

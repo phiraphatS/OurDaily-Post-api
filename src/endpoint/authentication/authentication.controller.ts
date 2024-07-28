@@ -8,8 +8,8 @@ export class AuthenticationController {
         private readonly authenticationService: AuthenticationService,
     ) { }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   async login(@Req() req) {
     return await this.authenticationService.login(req.user);
   }

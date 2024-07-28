@@ -48,13 +48,14 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api');
-  app.enableCors({
-    origin: ['http://localhost:3000', 'our-diary-phiraphat.zeabur.com'],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-recaptcha-token', 'multipart/form-data'],
-    credentials: true,
-  });
+  // app.enableCors({
+  //   origin: ['http://localhost:3000', 'our-diary-phiraphat.zeabur.com'],
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-recaptcha-token', 'multipart/form-data'],
+  //   credentials: true,
+  // });
 
+  app.enableCors();
   app.use(cookieParser())
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new LoggingInterceptor());
