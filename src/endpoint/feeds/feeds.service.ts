@@ -62,19 +62,20 @@ export class FeedsService {
         // }
         const imgList = await Promise.all(obj.postImgs.map(async (x) => {
           // Asia/Bangkok timezone
-          if (!x.imgUrlExpiredDate || x.imgUrlExpiredDate.getTime() < new Date().getTime()) {
-            const newUrl = await this.s3Storage.getSignedUrl(x.key);
-            if (!newUrl) {
-              return "";
-            }
-            newUrlList.push({
-              key: x.key,
-              url: newUrl,
-            })
-            return newUrl;
-          } else {
-            return x.imgUrl;
-          }
+          // if (!x.imgUrlExpiredDate || x.imgUrlExpiredDate.getTime() < new Date().getTime()) {
+          //   const newUrl = await this.s3Storage.getSignedUrl(x.key);
+          //   if (!newUrl) {
+          //     return "";
+          //   }
+          //   newUrlList.push({
+          //     key: x.key,
+          //     url: newUrl,
+          //   })
+          //   return newUrl;
+          // } else {
+          //   return x.imgUrl;
+          // }
+          return x.imgUrl;
         }))
 
         const targetUser = userFind.find((x) => x.id === obj.createdBy);
@@ -119,19 +120,19 @@ export class FeedsService {
       }
 
       // update new url
-      if (newUrlList.length > 0) {
-        const keyUpdateMap = newUrlList.map((x) => x.key);
-        const getPostImg = await this.postImgRepository.findBy({ key: In(keyUpdateMap) });
-        for (const obj of getPostImg) {
-          const newUrl = newUrlList.find((x) => x.key === obj.key);
-          obj.imgUrl = newUrl.url;
+      // if (newUrlList.length > 0) {
+      //   const keyUpdateMap = newUrlList.map((x) => x.key);
+      //   const getPostImg = await this.postImgRepository.findBy({ key: In(keyUpdateMap) });
+      //   for (const obj of getPostImg) {
+      //     const newUrl = newUrlList.find((x) => x.key === obj.key);
+      //     obj.imgUrl = newUrl.url;
           
-          const date = new Date();
-          date.setHours(date.getHours() + 1);
-          obj.imgUrlExpiredDate = date;
-        }
-        await this.postImgRepository.save(getPostImg);
-      }
+      //     const date = new Date();
+      //     date.setHours(date.getHours() + 1);
+      //     obj.imgUrlExpiredDate = date;
+      //   }
+      //   await this.postImgRepository.save(getPostImg);
+      // }
       
       return {
         status: true,
