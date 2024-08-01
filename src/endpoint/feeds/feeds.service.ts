@@ -56,26 +56,8 @@ export class FeedsService {
       const result = [];
       const newUrlList = [];
       for (const obj of feeds) {
-        // const imgList = [];
-        // for (const img of obj.postImgs) {
-        //   imgList.push(img.imgUrl);
-        // }
         const imgList = await Promise.all(obj.postImgs.map(async (x) => {
-          // Asia/Bangkok timezone
-          // if (!x.imgUrlExpiredDate || x.imgUrlExpiredDate.getTime() < new Date().getTime()) {
-          //   const newUrl = await this.s3Storage.getSignedUrl(x.key);
-          //   if (!newUrl) {
-          //     return "";
-          //   }
-          //   newUrlList.push({
-          //     key: x.key,
-          //     url: newUrl,
-          //   })
-          //   return newUrl;
-          // } else {
-          //   return x.imgUrl;
-          // }
-          return x.imgUrl;
+          return { imgUrl: x.imgUrl, key: x.key };
         }))
 
         const targetUser = userFind.find((x) => x.id === obj.createdBy);
