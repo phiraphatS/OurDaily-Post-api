@@ -7,6 +7,8 @@ import {
 } from "typeorm";
 import { Comment } from "./Comment";
 import { Like } from "./Like";
+import { SharedAlbums } from "./SharedAlbums";
+import { UserAlbums } from "./UserAlbums";
 
 @Index("User_pkey", ["id"], { unique: true })
 @Entity("User", { schema: "public" })
@@ -77,4 +79,10 @@ export class User {
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
+
+  @OneToMany(() => SharedAlbums, (sharedAlbums) => sharedAlbums.createdBy)
+  sharedAlbums: SharedAlbums[];
+
+  @OneToMany(() => UserAlbums, (userAlbums) => userAlbums.user)
+  userAlbums: UserAlbums[];
 }

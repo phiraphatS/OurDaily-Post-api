@@ -6,6 +6,7 @@ import { User } from '../../entities/User';
 import { S3StorageCloud } from '../../_helper/s3-storage-cloud';
 import { Like } from '../../entities/Like';
 import { Comment } from '../../entities/Comment';
+import { UserGuard } from '../../_helper/user.guard';
 
 @Module({
   imports: [

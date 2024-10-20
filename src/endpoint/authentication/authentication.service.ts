@@ -33,11 +33,6 @@ export class AuthenticationService {
         };
     }
 
-    // async onModuleInit() {
-    //     // Call regeneratePasswordAndUpdate when the module is initialized
-    //     await this.regeneratePasswordAndUpdate();
-    // }
-
     async regeneratePasswordAndUpdate() {
         try {
             const starterPassword = '224488'
@@ -55,5 +50,9 @@ export class AuthenticationService {
         } catch (err) {
             throw err
         }
+    }
+    
+    async findByEmail(email: string) {
+        return this.userRepository.findOneBy({ email: email });
     }
 }

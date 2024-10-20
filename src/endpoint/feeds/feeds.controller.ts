@@ -12,9 +12,9 @@ export class FeedsController {
     try {
       const user = req.user || { id: 2 };
       const response = await this.feedsService.postNow(user, body);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 
@@ -26,9 +26,9 @@ export class FeedsController {
       const alreadyGet = query.alreadyGet ? query.alreadyGet.split(',').map((x: string) => parseInt(x)) : [];
       const user = req.user || { id: 2 };
       const response = await this.feedsService.getFeeds(user, page, limit, alreadyGet);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 
@@ -37,9 +37,9 @@ export class FeedsController {
     try {
       const user = req.user || { id: 2 };
       const response = await this.feedsService.likePost(user, body.post_id);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 
@@ -48,9 +48,9 @@ export class FeedsController {
     try {
       const user = req.user || { id: 2 };
       const response = await this.feedsService.commentPost(user, body);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 
@@ -58,9 +58,9 @@ export class FeedsController {
   async getComments(@Req() req: any, @Res() res: any, @Query() query: any){
     try {
       const response = await this.feedsService.getComment(query);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 
@@ -69,9 +69,9 @@ export class FeedsController {
     try {
       const user = req.user || { id: 2 };
       const response = await this.feedsService.deletePost(user, body.post_id);
-      return res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(response);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
     }
   }
 }

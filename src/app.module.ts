@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationModule } from './_configuration/configuration.module';
 import { ProjectMulterModule } from './_multer/_multer.module';
 import { DatebaseModule } from './_database/database.module';
+import { GooglePictureModule } from './endpoint/google-picture/google-picture.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { DatebaseModule } from './_database/database.module';
     UsersModule,
     AuthenticationModule,
     ProjectMulterModule,
+    GooglePictureModule,
   ],
   controllers: [AppController],
   providers: [

@@ -62,4 +62,8 @@ export class UsersService {
             await queryRunner.release();
         }
     }
+
+    async findByEmail(email: string) {
+        return await this.usersRepository.findOne({ where: { email } });
+    }
 }

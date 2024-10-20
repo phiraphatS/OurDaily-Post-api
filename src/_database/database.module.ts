@@ -7,6 +7,8 @@ import { Comment } from '../entities/Comment';
 import { FileUpload } from '../entities/FileUpload';
 import { Post } from '../entities/Post';
 import { Like } from '../entities/Like';
+import { SharedAlbums } from '../entities/SharedAlbums';
+import { UserAlbums } from '../entities/UserAlbums';
 
 @Module({
     imports: [
@@ -21,7 +23,16 @@ import { Like } from '../entities/Like';
                     username: configService.get('database.username'),
                     password: configService.get('database.password'),
                     database: configService.get('database.database'),
-                    entities: configService.get('database.entities'),
+                    entities: [
+                        User,
+                        Post,
+                        Comment,
+                        Like,
+                        PostImg,
+                        FileUpload,
+                        SharedAlbums,
+                        UserAlbums,
+                    ],
                     synchronize: configService.get('database.synchronize') === 'true',
                     logging: configService.get('database.logging') === 'true',
                     retryAttempts: 1,
